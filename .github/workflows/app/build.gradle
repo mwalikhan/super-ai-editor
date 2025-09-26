@@ -1,0 +1,30 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.supereditor.ultimateeditor"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.0"
+    implementation 'com.arthenica:ffmpeg-kit-full:4.5.LTS'
+    implementation 'com.github.JorenSix:TarsosDSP:2.4'
+    implementation 'org.vosk:android:0.3.38'
+    implementation 'org.opencv:opencv-android:4.5.5'
+}
