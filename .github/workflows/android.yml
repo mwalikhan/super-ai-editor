@@ -29,14 +29,19 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Gradle (caching)
+      # Install a clean Gradle and DISABLE wrapper validation once
+      - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.7
+          validate-wrappers: false
 
-      - name: Ensure gradlew is executable
-        run: chmod +x ./gradlew
-
-      - name: Verify Gradle wrapper
-        run: ./gradlew --version
+      # Generate a brand-new official Gradle wrapper on the runner
+      - name: Generate Gradle wrapper
+        run: |
+          gradle wrapper --gradle-version 8.7 --distribution-type bin
+          chmod +x ./gradlew
+          ./gradlew --version
 
       - name: Install Android SDK + accept licenses
         uses: android-actions/setup-android@v3
