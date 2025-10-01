@@ -1,18 +1,11 @@
 name: Android CI
 
 on:
-push:
-branches: [ main ]
-pull_request:
-branches: [ main ]
 workflow_dispatch:
-
-permissions:
-contents: read
-
-concurrency:
-group: android-ci-${{ github.ref }}
-cancel-in-progress: true
+push:
+branches: [main]
+pull_request:
+branches: [main]
 
 jobs:
 build:
@@ -28,7 +21,6 @@ steps:
       distribution: temurin
       java-version: '17'
 
-  # Install Gradle 8.7 on the runner and disable wrapper validation
   - name: Set up Gradle
     uses: gradle/actions/setup-gradle@v3
     with:
@@ -46,7 +38,6 @@ steps:
         build-tools;35.0.0
         cmdline-tools;latest
 
-  # IMPORTANT: use "gradle", not "./gradlew"
   - name: Build debug APK
     run: gradle --no-daemon clean :app:assembleDebug
 
