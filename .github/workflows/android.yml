@@ -1,65 +1,59 @@
 name: Android CI
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
+push:
+branches: [ main ]
+pull_request:
+branches: [ main ]
+workflow_dispatch:
 
 permissions:
-  contents: read
+contents: read
 
 concurrency:
-  group: android-ci-${{ github.ref }}
-  cancel-in-progress: true
+group: android-ci-${{ github.ref }}
+cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 45
+build:
+runs-on: ubuntu-24.04
+timeout-minutes: 45
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  - name: Set up JDK 17 (Temurin)
+    uses: actions/setup-java@v4
+    with:
+      distribution: temurin
+      java-version: '17'
 
-      - name: Set up JDK 17 (Temurin)
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
+  # Install Gradle 8.7 on the runner and enable caching.
+  # validate-wrappers: false ensures it won't block on your uploaded wrapper.
+  - name: Set up Gradle
+    uses: gradle/actions/setup-gradle@v3
+    with:
+      gradle-version: 8.7
+      validate-wrappers: false
 
-      # Install a clean Gradle and DISABLE wrapper validation once
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: 8.7
-          validate-wrappers: false
+  - name: Install Android SDK + accept licenses
+    uses: android-actions/setup-android@v3
+    with:
+      api-level: 35
+      build-tools: '35.0.0'
+      packages: |
+        platform-tools
+        platforms;android-35
+        build-tools;35.0.0
+        cmdline-tools;latest
 
-      # Generate a brand-new official Gradle wrapper on the runner
-      - name: Generate Gradle wrapper
-        run: |
-          gradle wrapper --gradle-version 8.7 --distribution-type bin
-          chmod +x ./gradlew
-          ./gradlew --version
+  # IMPORTANT: Use "gradle" (from the action), not "./gradlew".
+  - name: Build debug APK
+    run: gradle --no-daemon clean :app:assembleDebug
 
-      - name: Install Android SDK + accept licenses
-        uses: android-actions/setup-android@v3
-        with:
-          api-level: 35
-          build-tools: '35.0.0'
-          packages: |
-            platform-tools
-            platforms;android-35
-            build-tools;35.0.0
-            cmdline-tools;latest
-
-      - name: Build debug APK
-        run: ./gradlew --no-daemon clean :app:assembleDebug
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
+  - name: Upload APK artifact
+    uses: actions/upload-artifact@v4
+    with:
+      name: app-debug-apk
+      path: app/build/outputs/apk/debug/*.apk
+      if-no-files-found: error
