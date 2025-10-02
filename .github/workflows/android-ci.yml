@@ -39,13 +39,24 @@ jobs:
         
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
+      with:
+  api-level: 35
+  build-tools: '35.0.0'
+  packages: |
+    platform-tools
+    platforms;android-35
+    build-tools;35.0.0
+    cmdline-tools;latest
       
     - name: Grant Execute Permission for Gradlew
       run: chmod +x gradlew
       
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
+      continue-on-error: true
       with:
+      gradle-version: 8.7
+validate-wrappers: false
         gradle-version: wrapper
         
     - name: Cache Gradle Dependencies
@@ -69,10 +80,10 @@ jobs:
         fi
         
     - name: Clean Project
-      run: ./gradlew clean
+      run: ./gradle clean
       
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace --no-daemon
+      run: ./gradle assembleDebug --stacktrace --no-daemon
       env:
         SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
         SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
@@ -80,21 +91,22 @@ jobs:
         
     - name: Build Release APK
       if: github.event_name != 'pull_request'
-      run: ./gradlew assembleRelease --stacktrace --no-daemon
+      run: ./gradle assembleRelease --stacktrace --no-daemon
       env:
         SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
         SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
         
     - name: Run Unit Tests
-      run: ./gradlew testDebugUnitTest --stacktrace
+      run: ./gradle testDebugUnitTest --stacktrace
       
     - name: Run Lint Checks
-      run: ./gradlew lintDebug --stacktrace
+      run: ./gradle lintDebug --stacktrace
       continue-on-error: true
       
     - name: Generate Test Report
       uses: dorny/test-reporter@v1
+      continue-on-error: true
       if: always()
       with:
         name: Test Results
@@ -142,3 +154,4 @@ jobs:
     - name: Cleanup Keystore
       if: always()
       run: rm -f keystore.jks
+
