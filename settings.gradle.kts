@@ -11,7 +11,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // Add JitPack for FFmpeg
         maven { url = uri("https://jitpack.io") }
     }
 }
