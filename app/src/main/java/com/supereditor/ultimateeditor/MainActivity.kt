@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         }
         
         val versionView = TextView(this).apply {
-            text = "Version 1.0"
+            text = "Version ${EditorCore.getAppVersion()}"
             textSize = 20f
             gravity = Gravity.CENTER
             setPadding(0, 20, 0, 0)
