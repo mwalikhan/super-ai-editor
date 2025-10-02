@@ -53,8 +53,4 @@ class EditorCore {
             false
         }
     }
-    
-    fun cancelFFmpeg() {
-        FFmpeg.cancel()
-    }
 }
