@@ -1,6 +1,8 @@
 package com.supereditor.ultimateeditor
 
 import android.os.Bundle
+import android.view.Gravity
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -9,14 +11,28 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        val textView = TextView(this)
-        textView.text = "Super AI Editor\nVersion 1.0"
-        textView.textSize = 24f
-        textView.setPadding(50, 50, 50, 50)
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
+            setPadding(50, 50, 50, 50)
+        }
         
-        setContentView(textView)
+        val titleView = TextView(this).apply {
+            text = "Super AI Editor"
+            textSize = 32f
+            gravity = Gravity.CENTER
+        }
         
-        val editorCore = EditorCore()
-        val version = editorCore.getAppVersion()
+        val versionView = TextView(this).apply {
+            text = "Version 1.0"
+            textSize = 20f
+            gravity = Gravity.CENTER
+            setPadding(0, 20, 0, 0)
+        }
+        
+        layout.addView(titleView)
+        layout.addView(versionView)
+        
+        setContentView(layout)
     }
 }
