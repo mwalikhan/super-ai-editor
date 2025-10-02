@@ -6,7 +6,7 @@ jobs:
 build:
 runs-on: ubuntu-24.04
 timeout-minutes: 45
-    steps:
+steps:
       - name: Checkout
         uses: actions/checkout@v4
 - name: Set up JDK 17 (Temurin)
@@ -42,3 +42,4 @@ name: app-debug-apk
 path: app/build/outputs/apk/debug/*.apk
 
 if-no-files-found: error
+
