@@ -1,20 +1,19 @@
 pluginManagement {
-repositories {
-google()
-mavenCentral()
-gradlePluginPortal()
-}
-plugins {
-id("com.android.application") version "8.5.2"
-id("org.jetbrains.kotlin.android") version "1.9.24"
-}
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
 
 dependencyResolutionManagement {
-repositories {
-google()
-mavenCentral()
-}
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        // Add JitPack for FFmpeg
+        maven { url = uri("https://jitpack.io") }
+    }
 }
 
 rootProject.name = "super-ai-editor"
