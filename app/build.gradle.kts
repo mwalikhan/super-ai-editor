@@ -38,21 +38,15 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 }
 
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.constraintlaint:constraintlayout:2.1.4")
 
-    // FFmpeg Kit - Using GitHub Maven repository
+    // Mobile FFmpeg from JitPack
     implementation("com.arthenica:mobile-ffmpeg-full:4.4.LTS")
     
     testImplementation("junit:junit:4.13.2")
