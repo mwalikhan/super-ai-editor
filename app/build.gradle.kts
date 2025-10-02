@@ -46,8 +46,8 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    // FFmpeg Kit
-    implementation("com.arthenica:ffmpeg-kit-min:5.1")
+    // FFmpeg Kit - CORRECT VERSION
+    implementation("com.arthenica:ffmpeg-kit-full:6.0-2")
     
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
