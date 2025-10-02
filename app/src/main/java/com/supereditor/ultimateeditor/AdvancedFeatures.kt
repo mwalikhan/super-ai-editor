@@ -1,16 +1,16 @@
 package com.supereditor.ultimateeditor
 
-class AdvancedFeatures(private val core: EditorCore) {
+import android.util.Log
 
-    fun stabilize(video: String): String {
-        val output = video.replace(".mp4", "_stab.mp4")
-        core.runFFmpeg("-i $video -vf deshake $output")
-        return output
+class AdvancedFeatures {
+    
+    fun applyFilter(inputPath: String, filterName: String, outputPath: String): Boolean {
+        val command = "-i $inputPath -vf $filterName $outputPath"
+        return EditorCore.runFFmpeg(command)
     }
-
-    fun autoSubtitles(video: String, language: String): String {
-        val output = video.replace(".mp4", "_subs.srt")
-        println("Subtitles generated for $video with language: $language")
-        return output
+    
+    fun addWatermark(inputPath: String, watermarkPath: String, outputPath: String): Boolean {
+        val command = "-i $inputPath -i $watermarkPath -filter_complex overlay $outputPath"
+        return EditorCore.runFFmpeg(command)
     }
 }
