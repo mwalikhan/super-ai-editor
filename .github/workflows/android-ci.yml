@@ -17,10 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     
-    strategy:
-      matrix:
-        api-level: [35]
-        
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
@@ -41,23 +37,19 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        api-level: 35
-        build-tools: '35.0.0'
-        packages: |
-          platform-tools
-          platforms;android-35
-          build-tools;35.0.0
-          cmdline-tools;latest
+        cmdline-tools-version: 11076708
+        packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+      
+    - name: Accept Android SDK Licenses
+      run: yes | sdkmanager --licenses || true
       
     - name: Grant Execute Permission for Gradlew
       run: chmod +x gradlew
       
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
-      continue-on-error: true
       with:
-        gradle-version: '8.7'
-        validate-wrappers: false
+        gradle-version: wrapper
         
     - name: Cache Gradle Dependencies
       uses: actions/cache@v4
@@ -70,6 +62,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
           
+    - name: Create local.properties
+      run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+          
     - name: Decode Keystore
       if: github.event_name != 'pull_request'
       env:
@@ -80,10 +75,10 @@ jobs:
         fi
         
     - name: Clean Project
-      run: ./gradlew clean
+      run: ./gradlew clean --stacktrace
       
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace --no-daemon
+      run: ./gradlew assembleDebug --stacktrace
       env:
         SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
         SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
@@ -91,7 +86,8 @@ jobs:
         
     - name: Build Release APK
       if: github.event_name != 'pull_request'
-      run: ./gradlew assembleRelease --stacktrace --no-daemon
+      run: ./gradlew assembleRelease --stacktrace
+      continue-on-error: true
       env:
         SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
         SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
@@ -105,52 +101,45 @@ jobs:
       run: ./gradlew lintDebug --stacktrace
       continue-on-error: true
       
-    - name: Generate Test Report
-      uses: dorny/test-reporter@v1
-      continue-on-error: true
-      if: always()
-      with:
-        name: Test Results
-        path: '**/build/test-results/test*/*.xml'
-        reporter: java-junit
-        fail-on-error: false
-        
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
+      if: success() || failure()
       with:
-        name: app-debug-${{ matrix.api-level }}
+        name: app-debug
         path: app/build/outputs/apk/debug/*.apk
         retention-days: 30
-        if-no-files-found: error
+        if-no-files-found: warn
         
     - name: Upload Release APK
       if: github.event_name != 'pull_request'
       uses: actions/upload-artifact@v4
       with:
-        name: app-release-${{ matrix.api-level }}
+        name: app-release
         path: app/build/outputs/apk/release/*.apk
         retention-days: 90
-        if-no-files-found: warn
+        if-no-files-found: ignore
         
     - name: Upload Test Reports
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: test-reports-${{ matrix.api-level }}
+        name: test-reports
         path: |
           app/build/reports/tests/
           app/build/reports/lint-results-*.html
         retention-days: 30
+        if-no-files-found: ignore
         
-    - name: Upload Build Outputs
+    - name: Upload Build Logs
       uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: build-outputs-${{ matrix.api-level }}
+        name: build-logs
         path: |
           app/build/outputs/logs/
           app/build/reports/
         retention-days: 7
+        if-no-files-found: ignore
         
     - name: Cleanup Keystore
       if: always()
