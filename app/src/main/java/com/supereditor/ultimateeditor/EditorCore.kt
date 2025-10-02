@@ -1,8 +1,8 @@
 package com.supereditor.ultimateeditor
 
 import android.util.Log
-import com.arthenica.ffmpegkit.FFmpegKit
-import com.arthenica.ffmpegkit.ReturnCode
+import com.arthenica.mobileffmpeg.Config
+import com.arthenica.mobileffmpeg.FFmpeg
 
 class EditorCore {
     
@@ -15,38 +15,46 @@ class EditorCore {
     ) {
         Log.d(TAG, "Executing FFmpeg command: $command")
         
-        FFmpegKit.execute(command) { session ->
-            val returnCode = session.returnCode
-            
-            if (ReturnCode.isSuccess(returnCode)) {
+        val result = FFmpeg.execute(command)
+        
+        when (result) {
+            0 -> {
                 Log.d(TAG, "FFmpeg command succeeded")
                 onSuccess()
-            } else if (ReturnCode.isCancel(returnCode)) {
+            }
+            255 -> {
                 Log.w(TAG, "FFmpeg command cancelled")
                 onError("Command was cancelled")
-            } else {
-                val errorMessage = session.failStackTrace ?: "Unknown error"
-                Log.e(TAG, "FFmpeg command failed: $errorMessage")
+            }
+            else -> {
+                val errorMessage = "FFmpeg failed with return code: $result"
+                Log.e(TAG, errorMessage)
                 onError(errorMessage)
             }
         }
     }
     
-    fun getFFmpegVersion(callback: (String) -> Unit) {
-        FFmpegKit.execute("-version") { session ->
-            val output = session.output ?: "Unknown version"
-            Log.d(TAG, "FFmpeg version: $output")
-            callback(output)
+    fun getFFmpegVersion(): String {
+        return try {
+            val version = Config.getFFmpegVersion()
+            Log.d(TAG, "FFmpeg version: $version")
+            version ?: "Unknown"
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to get FFmpeg version: ${e.message}")
+            "Unknown"
         }
     }
     
     fun isFFmpegAvailable(): Boolean {
         return try {
-            FFmpegKit.execute("-version")
-            true
+            Config.getFFmpegVersion() != null
         } catch (e: Exception) {
             Log.e(TAG, "FFmpeg not available: ${e.message}")
             false
         }
+    }
+    
+    fun cancelFFmpeg() {
+        FFmpeg.cancel()
     }
 }
