@@ -1,11 +1,16 @@
 package com.supereditor.ultimateeditor
 
-class AiVisualEditor(private val core: EditorCore) {
+import android.util.Log
 
-    fun changeBackground(video: String, newBg: String): String {
-        val output = video.replace(".mp4", "_bg.mp4")
-        val cmd = "-i $video -i $newBg -filter_complex \"overlay=0:0\" $output"
-        core.runFFmpeg(cmd)
-        return output
+class AiVisualEditor {
+    
+    fun enhanceVideo(inputPath: String, outputPath: String): Boolean {
+        val command = "-i $inputPath -vf eq=brightness=0.06:saturation=1.2 $outputPath"
+        return EditorCore.runFFmpeg(command)
+    }
+    
+    fun changeSpeed(inputPath: String, speed: Float, outputPath: String): Boolean {
+        val command = "-i $inputPath -filter:v setpts=${1/speed}*PTS $outputPath"
+        return EditorCore.runFFmpeg(command)
     }
 }
