@@ -1,14 +1,13 @@
 package com.supereditor.ultimateeditor
 
-class FairUseEditor(private val core: EditorCore) {
-
-    fun enforceFairUse(input: String, commentary: String): String {
-        val clipped = core.trimVideo(input, 0, 20)
-        val output = clipped.replace(".mp4", "_fairuse.mp4")
-        val cmd = "-i $clipped -i $commentary " +
-                "-vf drawtext=text='Review/Analysis':x=20:y=20 " +
-                "-c:v libx264 -c:a aac -shortest $output"
-        core.runFFmpeg(cmd)
-        return output
+class FairUseEditor {
+    
+    fun createFairUseClip(inputPath: String, startTime: String, duration: String, outputPath: String): Boolean {
+        return EditorCore.trimVideo(inputPath, startTime, duration, outputPath)
+    }
+    
+    fun addCommentary(videoPath: String, audioPath: String, outputPath: String): Boolean {
+        val command = "-i $videoPath -i $audioPath -c:v copy -map 0:v:0 -map 1:a:0 $outputPath"
+        return EditorCore.runFFmpeg(command)
     }
 }
