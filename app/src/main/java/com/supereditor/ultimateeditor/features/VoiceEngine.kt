@@ -56,10 +56,8 @@ class VoiceEngine(private val context: Context) {
         try {
             Log.d(TAG, "Generating voice: voiceId=$voiceId, emotion=$emotion")
             
-            // Parse emotion tags from text
             val parsedText = parseEmotionTags(text)
             
-            // Simulate AI voice generation process
             onProgress(10)
             delay(500)
             
@@ -89,7 +87,6 @@ class VoiceEngine(private val context: Context) {
     }
     
     private fun parseEmotionTags(text: String): String {
-        // Parse emotion tags like [happy], [sad], [angry]
         val emotionPattern = Regex("\```math
 (\\w+)\```")
         val matches = emotionPattern.findAll(text)
@@ -99,7 +96,6 @@ class VoiceEngine(private val context: Context) {
             Log.d(TAG, "Found emotion tag: $emotion")
         }
         
-        // Remove tags and return clean text
         return text.replace(emotionPattern, "")
     }
     
@@ -110,7 +106,6 @@ class VoiceEngine(private val context: Context) {
         try {
             Log.d(TAG, "Downloading voice pack for: $language")
             
-            // Simulate download with progress
             for (i in 0..100 step 10) {
                 delay(200)
                 onProgress(i)
@@ -127,7 +122,6 @@ class VoiceEngine(private val context: Context) {
     
     fun previewVoice(voiceId: String, sampleText: String): Boolean {
         Log.d(TAG, "Preview voice: $voiceId with text: $sampleText")
-        // Placeholder for voice preview
         return true
     }
     
