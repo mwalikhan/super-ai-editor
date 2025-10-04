@@ -43,6 +43,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    
+    packaging {
+        resources {
+            pickFirsts += setOf("lib/x86/libc++_shared.so", "lib/x86_64/libc++_shared.so", "lib/armeabi-v7a/libc++_shared.so", "lib/arm64-v8a/libc++_shared.so")
+        }
+    }
 }
 
 dependencies {
@@ -62,4 +68,6 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+    
+    implementation("com.arthenica:ffmpeg-kit-min:6.0-2")
 }
