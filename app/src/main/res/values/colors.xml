@@ -1,1 +1,28 @@
-<resources> <color name="black">#000000</color> <color name="white">#FFFFFF</color> </resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <color name="primary_dark">#0A0E27</color>
+    <color name="primary_medium">#16213E</color>
+    <color name="primary_light">#1F4068</color>
+    
+    <color name="accent_red">#E43F5A</color>
+    <color name="accent_blue">#1B98E0</color>
+    <color name="accent_green">#00D9A5</color>
+    <color name="accent_purple">#9B59B6</color>
+    <color name="accent_orange">#FF6B35</color>
+    <color name="accent_yellow">#FFD93D</color>
+    
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0B8C8</color>
+    <color name="text_tertiary">#6C7A89</color>
+    
+    <color name="background_dark">#0F0F0F</color>
+    <color name="background_medium">#1A1A1A</color>
+    <color name="card_background">#1F1F1F</color>
+    
+    <color name="success">#27AE60</color>
+    <color name="error">#E74C3C</color>
+    <color name="warning">#F39C12</color>
+</resources>
