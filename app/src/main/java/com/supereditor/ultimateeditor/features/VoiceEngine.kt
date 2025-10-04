@@ -75,7 +75,7 @@ class VoiceEngine(private val context: Context) {
             
             onProgress(100)
             
-            val outputPath = "${context.cacheDir}/generated_voice_${System.currentTimeMillis()}.mp3"
+            val outputPath = context.cacheDir.toString() + "/generated_voice_" + System.currentTimeMillis() + ".mp3"
             
             Log.d(TAG, "Voice generated successfully: $outputPath")
             Result.success(outputPath)
@@ -87,16 +87,26 @@ class VoiceEngine(private val context: Context) {
     }
     
     private fun parseEmotionTags(text: String): String {
-        val emotionPattern = Regex("\```math
-(\\w+)\```")
-        val matches = emotionPattern.findAll(text)
+        val pattern = "[a-zA-Z]+"
+        val openBracket = "["
+        val closeBracket = "]"
         
-        for (match in matches) {
-            val emotion = match.groupValues[1]
-            Log.d(TAG, "Found emotion tag: $emotion")
+        var result = text
+        var startIndex = result.indexOf(openBracket)
+        
+        while (startIndex != -1) {
+            val endIndex = result.indexOf(closeBracket, startIndex)
+            if (endIndex != -1) {
+                val tag = result.substring(startIndex, endIndex + 1)
+                Log.d(TAG, "Found emotion tag: $tag")
+                result = result.replace(tag, "")
+                startIndex = result.indexOf(openBracket)
+            } else {
+                break
+            }
         }
         
-        return text.replace(emotionPattern, "")
+        return result
     }
     
     suspend fun downloadVoicePack(
