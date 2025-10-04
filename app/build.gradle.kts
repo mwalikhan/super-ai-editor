@@ -43,18 +43,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    
-    packaging {
-        resources {
-            excludes += setOf(
-                "META-INF/DEPENDENCIES",
-                "META-INF/LICENSE",
-                "META-INF/LICENSE.txt",
-                "META-INF/NOTICE",
-                "META-INF/NOTICE.txt"
-            )
-        }
-    }
 }
 
 dependencies {
@@ -74,6 +62,4 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.work:work-runtime-ktx:2.9.0")
-    
-    implementation("com.arthenica:ffmpeg-kit-full:6.0-2")
 }
