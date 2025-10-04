@@ -1,64 +1,115 @@
 package com.supereditor.ultimateeditor
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainActivity : AppCompatActivity() {
     
+    private lateinit var btnNewProject: MaterialButton
+    private lateinit var btnVoiceStudio: MaterialButton
+    private lateinit var btnOpenProject: MaterialButton
+    private lateinit var btnSettings: MaterialButton
+    
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allGranted = permissions.values.all { it }
+        if (allGranted) {
+            openEditor()
+        } else {
+            showPermissionDialog()
+        }
+    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
         
-        try {
-            val layout = LinearLayout(this).apply {
-                orientation = LinearLayout.VERTICAL
-                gravity = Gravity.CENTER
-                setPadding(50, 50, 50, 50)
-                setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
-            }
-            
-            val titleView = TextView(this).apply {
-                text = "Super AI Editor"
-                textSize = 32f
-                setTextColor(ContextCompat.getColor(context, android.R.color.black))
-                gravity = Gravity.CENTER
-            }
-            
-            val versionView = TextView(this).apply {
-                text = "Version ${EditorCore.getAppVersion()}"
-                textSize = 20f
-                setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
-                gravity = Gravity.CENTER
-                setPadding(0, 20, 0, 0)
-            }
-            
-            val statusView = TextView(this).apply {
-                text = "App is running successfully!"
-                textSize = 16f
-                setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_dark))
-                gravity = Gravity.CENTER
-                setPadding(0, 40, 0, 0)
-            }
-            
-            layout.addView(titleView)
-            layout.addView(versionView)
-            layout.addView(statusView)
-            
-            setContentView(layout)
-            
-        } catch (e: Exception) {
-            e.printStackTrace()
-            // Fallback simple view
-            val errorText = TextView(this).apply {
-                text = "Error: ${e.message}"
-                textSize = 16f
-                gravity = Gravity.CENTER
-                setPadding(50, 50, 50, 50)
-            }
-            setContentView(errorText)
+        initViews()
+        setupClickListeners()
+    }
+    
+    private fun initViews() {
+        btnNewProject = findViewById(R.id.btnNewProject)
+        btnVoiceStudio = findViewById(R.id.btnVoiceStudio)
+        btnOpenProject = findViewById(R.id.btnOpenProject)
+        btnSettings = findViewById(R.id.btnSettings)
+    }
+    
+    private fun setupClickListeners() {
+        btnNewProject.setOnClickListener {
+            checkPermissionsAndStart()
         }
+        
+        btnVoiceStudio.setOnClickListener {
+            openVoiceStudio()
+        }
+        
+        btnOpenProject.setOnClickListener {
+            Toast.makeText(this, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show()
+        }
+        
+        btnSettings.setOnClickListener {
+            Toast.makeText(this, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    private fun checkPermissionsAndStart() {
+        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(
+                Manifest.permission.READ_MEDIA_VIDEO,
+                Manifest.permission.READ_MEDIA_AUDIO,
+                Manifest.permission.READ_MEDIA_IMAGES,
+                Manifest.permission.CAMERA,
+                Manifest.permission.RECORD_AUDIO
+            )
+        } else {
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA,
+                Manifest.permission.RECORD_AUDIO
+            )
+        }
+        
+        val notGranted = permissions.filter {
+            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
+        }
+        
+        if (notGranted.isEmpty()) {
+            openEditor()
+        } else {
+            permissionLauncher.launch(notGranted.toTypedArray())
+        }
+    }
+    
+    private fun openEditor() {
+        val intent = Intent(this, EditorActivity::class.java)
+        startActivity(intent)
+    }
+    
+    private fun openVoiceStudio() {
+        val intent = Intent(this, VoiceStudioActivity::class.java)
+        startActivity(intent)
+    }
+    
+    private fun showPermissionDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.permission_required))
+            .setMessage(getString(R.string.permission_storage))
+            .setPositiveButton(getString(R.string.dialog_ok)) { _, _ ->
+                checkPermissionsAndStart()
+            }
+            .setNegativeButton(getString(R.string.dialog_cancel), null)
+            .show()
     }
 }
