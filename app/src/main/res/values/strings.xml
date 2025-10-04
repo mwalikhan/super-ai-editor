@@ -1,1 +1,118 @@
-<resources> <string name="app_name">Super AI Editor</string> </resources>
+<resources>
+    <string name="app_name">Super AI Editor Pro</string>
+    
+    <!-- Main Screen -->
+    <string name="welcome_title">Super AI Video Editor</string>
+    <string name="welcome_subtitle">Professional Editing with AI Voice Generation</string>
+    <string name="version">Version 2.0.0 - Ultimate Edition</string>
+    <string name="btn_new_project">New Project</string>
+    <string name="btn_open_project">Open Project</string>
+    <string name="btn_continue">Continue Last Project</string>
+    <string name="btn_voice_studio">AI Voice Studio</string>
+    <string name="btn_templates">Templates</string>
+    <string name="btn_settings">Settings</string>
+    
+    <!-- Features -->
+    <string name="features_title">✨ All Features (100%% Free)</string>
+    <string name="features_list">• 4K/8K Video Editing\n• AI Voice (20+ Languages)\n• Auto Subtitles\n• Color Grading &amp; LUTs\n• Green Screen\n• Motion Tracking\n• 1000+ Effects\n• Multi-track Audio\n• Fair Use Helper\n• 200+ Features!</string>
+    
+    <!-- Editor Screen -->
+    <string name="editor_title">Video Editor</string>
+    <string name="select_video">Select Video</string>
+    <string name="import_media">Import Media</string>
+    <string name="trim">Trim</string>
+    <string name="split">Split</string>
+    <string name="merge">Merge</string>
+    <string name="speed">Speed</string>
+    <string name="reverse">Reverse</string>
+    <string name="rotate">Rotate</string>
+    <string name="crop">Crop</string>
+    <string name="color">Color</string>
+    <string name="effects">Effects</string>
+    <string name="transitions">Transitions</string>
+    <string name="text">Text</string>
+    <string name="stickers">Stickers</string>
+    <string name="audio">Audio</string>
+    <string name="voice">AI Voice</string>
+    <string name="subtitles">Subtitles</string>
+    <string name="export">Export</string>
+    <string name="preview">Preview</string>
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
+    
+    <!-- AI Voice Studio -->
+    <string name="voice_studio_title">AI Voice Studio</string>
+    <string name="voice_script_hint">Enter your script here…\n\nTip: Use emotion tags:\n[happy] Welcome!\n[sad] This is sad…</string>
+    <string name="voice_language">Select Language</string>
+    <string name="voice_select">Select Voice</string>
+    <string name="voice_emotion">Emotion</string>
+    <string name="voice_preview">Preview</string>
+    <string name="voice_generate">Generate Voice</string>
+    <string name="voice_download">Download Voice Pack</string>
+    <string name="voice_library">Voice Library</string>
+    
+    <!-- Languages -->
+    <string name="lang_english">English</string>
+    <string name="lang_urdu">Urdu</string>
+    <string name="lang_hindi">Hindi</string>
+    <string name="lang_arabic">Arabic</string>
+    <string name="lang_spanish">Spanish</string>
+    <string name="lang_french">French</string>
+    <string name="lang_german">German</string>
+    <string name="lang_chinese">Chinese</string>
+    <string name="lang_japanese">Japanese</string>
+    <string name="lang_korean">Korean</string>
+    
+    <!-- Emotions -->
+    <string name="emotion_neutral">Neutral</string>
+    <string name="emotion_happy">Happy</string>
+    <string name="emotion_sad">Sad</string>
+    <string name="emotion_angry">Angry</string>
+    <string name="emotion_excited">Excited</string>
+    <string name="emotion_whisper">Whisper</string>
+    <string name="emotion_dramatic">Dramatic</string>
+    <string name="emotion_calm">Calm</string>
+    
+    <!-- Messages -->
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_storage">Storage permission needed to access videos</string>
+    <string name="permission_audio">Microphone permission needed for voice recording</string>
+    <string name="permission_camera">Camera permission needed</string>
+    <string name="permission_denied">Permission denied. Cannot proceed.</string>
+    <string name="no_video_selected">No video selected</string>
+    <string name="processing">Processing…</string>
+    <string name="export_success">Video exported successfully!</string>
+    <string name="export_failed">Export failed. Please try again.</string>
+    <string name="downloading">Downloading…</string>
+    <string name="download_complete">Download complete!</string>
+    <string name="download_failed">Download failed</string>
+    <string name="generating_voice">Generating AI voice…</string>
+    <string name="voice_generated">Voice generated successfully!</string>
+    <string name="coming_soon">Coming soon!</string>
+    <string name="feature_unlocked">All features are 100%% FREE!</string>
+    
+    <!-- Dialog -->
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_delete">Delete</string>
+    <string name="dialog_save">Save</string>
+    <string name="dialog_discard">Discard</string>
+    <string name="confirm_exit">Exit without saving?</string>
+    <string name="confirm_delete">Delete this project?</string>
+    
+    <!-- Export -->
+    <string name="export_quality">Quality</string>
+    <string name="export_resolution">Resolution</string>
+    <string name="export_format">Format</string>
+    <string name="export_location">Save Location</string>
+    <string name="quality_low">Low (360p)</string>
+    <string name="quality_medium">Medium (720p)</string>
+    <string name="quality_high">High (1080p)</string>
+    <string name="quality_ultra">Ultra (4K)</string>
+    
+    <!-- Menu -->
+    <string name="menu_help">Help</string>
+    <string name="menu_about">About</string>
+    <string name="menu_share">Share App</string>
+    <string name="menu_rate">Rate Us</string>
+</resources>
